@@ -1,0 +1,61 @@
+{
+    "properties": {
+      "displayName": "Require ITR-AssetID tag on specified resource types",
+      "policyType": "Custom",
+      "mode": "Indexed",
+      "description": "Require ITR-AssetID tag on specified resource types. Made by ITRelation",
+      "metadata": {
+        "category": "Tags",
+        "createdBy": "2d817ba0-1edf-4cbb-af65-f39cbc37defc",
+        "createdOn": "2019-11-06T09:28:31.2042676Z",
+        "updatedBy": "2d817ba0-1edf-4cbb-af65-f39cbc37defc",
+        "updatedOn": "2019-11-06T11:11:30.878072Z"
+      },
+      "parameters": {
+        "listOfResourceTypesNotAllowed": {
+          "type": "Array",
+          "metadata": {
+            "displayName": "Not allowed resource types",
+            "description": "The list of resource types that cannot be deployed.",
+            "strongType": "resourceTypes"
+          },
+          "defaultValue": [
+            "Microsoft.Network/virtualNetworkGateways",
+            "Microsoft.KeyVault/vaults",
+            "Microsoft.Compute/virtualMachines",
+            "Microsoft.RecoveryServices/vaults",
+            "Microsoft.SqlVirtualMachine/sqlVirtualMachines",
+            "Microsoft.Sql/managedInstances"
+          ]
+        },
+        "tagName": {
+          "type": "String",
+          "metadata": {
+            "displayName": "ITR-AssetID Tag name",
+            "description": "Name of the tag"
+          },
+          "defaultValue": "ITR-AssetID"
+        }
+      },
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "in": "[parameters('listOfResourceTypesNotAllowed')]"
+            },
+            {
+              "field": "[concat('tags[', parameters('tagName'), ']')]",
+              "exists": "false"
+            }
+          ]
+        },
+        "then": {
+          "effect": "Deny"
+        }
+      }
+    },
+    "id": "/subscriptions/38fc6e06-6575-49f9-823d-2b85b103bbe1/providers/Microsoft.Authorization/policyDefinitions/31707be1-1b62-4fe9-b940-80382e613d34",
+    "type": "Microsoft.Authorization/policyDefinitions",
+    "name": "31707be1-1b62-4fe9-b940-80382e613d34"
+  }

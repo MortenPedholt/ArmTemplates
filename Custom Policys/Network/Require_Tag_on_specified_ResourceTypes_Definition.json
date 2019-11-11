@@ -1,0 +1,46 @@
+{
+    "mode": "All",
+    "policyRule": {
+          "if": {
+            "allOf": [
+              {
+                "field": "type",
+                "in": "[parameters('listOfResourceTypes')]"
+              },
+              {
+                "field": "[concat('tags[', parameters('tagName'), ']')]",
+                "exists": "false"
+              }
+            ]
+          },
+          "then": {
+            "effect": "Deny"
+          }
+        },
+    "parameters": {
+          "listOfResourceTypes": {
+            "type": "Array",
+            "metadata": {
+              "displayName": "Resourcetypes that Require specific tag",
+              "description": "Resourcetypes that Require specific tag.",
+              "strongType": "resourceTypes"
+            },
+            "defaultValue": [
+              "Microsoft.Network/virtualNetworkGateways",
+              "Microsoft.KeyVault/vaults",
+              "Microsoft.Compute/virtualMachines",
+              "Microsoft.RecoveryServices/vaults",
+              "Microsoft.SqlVirtualMachine/sqlVirtualMachines",
+              "Microsoft.Sql/managedInstances"
+            ]
+          },
+          "tagName": {
+            "type": "String",
+            "metadata": {
+              "displayName": "Tag name",
+              "description": "Name of the tag"
+            },
+            "defaultValue": "DefaultValue"
+          }
+        }
+  }

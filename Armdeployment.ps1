@@ -8,13 +8,32 @@ ScriptVersion: 1.0.0
 
 ###>
 
-$resourceGroupName = "template"
-$resourceGroupLocation = "Westeurope"
-$subscriptionId = "5af551c7-57b1-485f-adea-417c40a581e8"
-$deploymentName = "Sharedservices"
-$mode = "incremental"
-$templateFilePath = ".\Template.json"
-$parametersFilePath = ".\Template.parameters.json"
+##*===============================================
+##* START - VARIABLES
+##*===============================================
+<#
+[CmdletBinding()]
+Param (
+    [Parameter(Mandatory=$true)]    
+    [string]$ResourceGroupName = '',
+    [Parameter(Mandatory=$true)]    
+    [string]$ResourceGroupLocation = 'west europe',
+    [Parameter(Mandatory=$true)]    
+    [string]$SubscriptionId = '',
+    [Parameter(Mandatory=$true)]    
+    [string]$DeploymentName = '',
+    [Parameter(Mandatory=$true)]    
+    [string]$mode = 'incremental',
+    [Parameter(Mandatory=$true)]    
+    [string]$TemplateFilePath = 'C:\Github\ITR Devops\ITR Azure\ARM_Templates\ITR_OpsServices\ITR_OpsServices.json',
+    [Parameter(Mandatory=$true)]    
+    [string]$ParametersFilePath = 'C:\Github\ITR Devops\ITR Azure\ARM_Templates\ITR_OpsServices\ITR_OpsServices.parameters.json'
+	
+)
+##*===============================================
+##* END - VARIABLES
+##*===============================================
+#>
 Function RegisterRP {
     Param(
         [string]$ResourceProviderNamespace
@@ -38,12 +57,12 @@ It was not found, please install from: https://docs.microsoft.com/en-us/powershe
 } 
 
 # sign in
-Write-Host "Logging in...";
-connect-AzAccount;
+#Write-Host "Logging in...";
+#connect-AzAccount;
 
 # select subscription
-Write-Host "Selecting subscription '$subscriptionId'";
-Select-AzSubscription -SubscriptionID $subscriptionId;
+Write-Host "Selecting subscription '$SubscriptionId'";
+Select-AzSubscription -SubscriptionID $SubscriptionId;
 
 <# Register RPs
 $resourceProviders = @("microsoft.network","microsoft.compute","microsoft.devtestlab");
@@ -56,24 +75,24 @@ if($resourceProviders.length) {
 #>
 
 #Create or check for existing resource group
-$resourceGroup = Get-AzResourceGroup -Name $resourceGroupName -ErrorAction SilentlyContinue
-if(!$resourceGroup)
+$ResourceGroup = Get-AzResourceGroup -Name $ResourceGroupName -ErrorAction SilentlyContinue
+if(!$ResourceGroup)
 {
-    Write-Host "Resource group '$resourceGroupName' does not exist. To create a new resource group, please enter a location.";
-    if(!$resourceGroupLocation) {
-        $resourceGroupLocation = Read-Host "resourceGroupLocation";
+    Write-Host "Resource group '$ResourceGroupName' does not exist. To create a new resource group, please enter a location.";
+    if(!$ResourceGroupLocation) {
+        $ResourceGroupLocation = Read-Host "resourceGroupLocation";
     }
-    Write-Host "Creating resource group '$resourceGroupName' in location '$resourceGroupLocation'";
-    New-AzResourceGroup -Name $resourceGroupName -Location $resourceGroupLocation
+    Write-Host "Creating resource group '$ResourceGroupName' in location '$ResourceGroupLocation'";
+    New-AzResourceGroup -Name $ResourceGroupName -Location $ResourceGroupLocation
 }
 else{
-    Write-Host "Using existing resource group '$resourceGroupName'";
+    Write-Host "Using existing resource group '$ResourceGroupName'";
 }
 
 # Start the deployment
 Write-Host "Starting deployment...";
-if(Test-Path $parametersFilePath) {
-    New-AzResourceGroupDeployment -ResourceGroupName $resourceGroupName -Name $deploymentName -TemplateFile $templateFilePath -TemplateParameterFile $parametersFilePath -Mode $mode -Verbose;
+if(Test-Path $ParametersFilePath) {
+    New-AzResourceGroupDeployment -ResourceGroupName $ResourceGroupName -Name $DeploymentName -TemplateFile $TemplateFilePath -TemplateParameterFile $ParametersFilePath -Mode $mode -Verbose;
 } else {
-    New-AzResourceGroupDeployment -ResourceGroupName $resourceGroupName -Name $deploymentName -TemplateFile $templateFilePath -Mode $mode -Verbose;
+    New-AzResourceGroupDeployment -ResourceGroupName $ResourceGroupName -Name $DeploymentName -TemplateFile $TemplateFilePath -Mode $Mode -Verbose;
 }
