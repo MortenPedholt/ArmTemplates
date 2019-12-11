@@ -11,13 +11,13 @@ ScriptVersion: 1.0.0
 ##*===============================================
 ##* START - VARIABLES
 ##*===============================================
-<#
+
 [CmdletBinding()]
 Param (
     [Parameter(Mandatory=$true)]    
     [string]$ResourceGroupName = '',
     [Parameter(Mandatory=$true)]    
-    [string]$ResourceGroupLocation = 'west europe',
+    [string]$ResourceGroupLocation = '',
     [Parameter(Mandatory=$true)]    
     [string]$SubscriptionId = '',
     [Parameter(Mandatory=$true)]    
@@ -25,15 +25,15 @@ Param (
     [Parameter(Mandatory=$true)]    
     [string]$mode = 'incremental',
     [Parameter(Mandatory=$true)]    
-    [string]$TemplateFilePath = 'C:\Github\ITR Devops\ITR Azure\ARM_Templates\ITR_OpsServices\ITR_OpsServices.json',
+    [string]$TemplateFilePath = '',
     [Parameter(Mandatory=$true)]    
-    [string]$ParametersFilePath = 'C:\Github\ITR Devops\ITR Azure\ARM_Templates\ITR_OpsServices\ITR_OpsServices.parameters.json'
+    [string]$ParametersFilePath = ''
 	
 )
 ##*===============================================
 ##* END - VARIABLES
 ##*===============================================
-#>
+
 Function RegisterRP {
     Param(
         [string]$ResourceProviderNamespace
@@ -57,22 +57,13 @@ It was not found, please install from: https://docs.microsoft.com/en-us/powershe
 } 
 
 # sign in
-#Write-Host "Logging in...";
-#connect-AzAccount;
+Write-Host "Logging in...";
+connect-AzAccount;
 
 # select subscription
 Write-Host "Selecting subscription '$SubscriptionId'";
 Select-AzSubscription -SubscriptionID $SubscriptionId;
 
-<# Register RPs
-$resourceProviders = @("microsoft.network","microsoft.compute","microsoft.devtestlab");
-if($resourceProviders.length) {
-    Write-Host "Registering resource providers"
-    foreach($resourceProvider in $resourceProviders) {
-        RegisterRP($resourceProvider);
-    }
-}
-#>
 
 #Create or check for existing resource group
 $ResourceGroup = Get-AzResourceGroup -Name $ResourceGroupName -ErrorAction SilentlyContinue

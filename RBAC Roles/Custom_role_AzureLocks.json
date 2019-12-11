@@ -1,0 +1,14 @@
+{
+    "Name": "Locks Administrator",
+    "IsCustom": true,
+    "Description": "Can view, create, and modify Azure Locks",
+    "Actions": [
+      "Microsoft.Authorization/locks/*"
+    ],
+    "NotActions": [],
+    "DataActions": [],
+    "NotDataActions": [],
+    "AssignableScopes": [
+      "/subscriptions/00000000-0000-0000-0000-000000000000"
+    ]
+  }
