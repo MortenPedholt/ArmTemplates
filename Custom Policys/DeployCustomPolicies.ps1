@@ -1,9 +1,9 @@
 #Deploy custom policies
 #Require tag on specifiecd resources
-$Policy = '.\Custom\ITR_Asset_policy.json'
-$Parameter = '.\CustomPolicies\ITR_Asset_parameters.json'
+$Policy = '.\Custom\Asset_policy.json'
+$Parameter = '.\CustomPolicies\Asset_parameters.json'
 $Mode = 'Indexed'
-$Name = 'Require ITR-AssetID on specific resourece types'
+$Name = 'Require tag on specific resourece types'
 #Check if policy exist
 $ITRAssetCheckpolicy = Get-AzPolicyAssignment -Name $Name -ErrorAction SilentlyContinue
 if ($ITRAssetCheckpolicy) {
