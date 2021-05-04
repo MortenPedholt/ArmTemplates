@@ -1,9 +1,9 @@
 {
     "properties": {
-      "displayName": "Require ITR-AssetID tag on specified resource types",
+      "displayName": "Require tag on specified resource types",
       "policyType": "Custom",
       "mode": "Indexed",
-      "description": "Require ITR-AssetID tag on specified resource types. Made by ITRelation",
+      "description": "Require tag on specified resource types. Made by ITRelation",
       "metadata": {
         "category": "Tags",
         "createdBy": "2d817ba0-1edf-4cbb-af65-f39cbc37defc",
@@ -31,7 +31,7 @@
         "tagName": {
           "type": "String",
           "metadata": {
-            "displayName": "ITR-AssetID Tag name",
+            "displayName": "Tag name",
             "description": "Name of the tag"
           },
           "defaultValue": "ITR-AssetID"
